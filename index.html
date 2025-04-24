@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>From Data to Decisions: SQL Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet"> -->
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary: #0f172a;
+      --text: #334155;
+      --light: #f8fafc;
+      --border: #e2e8f0;
+      --accent: #3b82f6;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background-color: var(--light);
+      scroll-behavior: smooth;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: 'Manrope', sans-serif;
+    }
+
+    .hero-gradient {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.95), rgba(15, 23, 42, 0.95));
+      color: white;
+
+    }
+
+    .section-heading::after {
+      content: "";
+      display: block;
+      width: 80px;
+      height: 4px;
+      background-color: var(--accent);
+      margin-top: 0.5rem;
+      border-radius: 2px;
+    }
+
+    .code-block {
+      background-color: #f1f5f9;
+      border-left: 4px solid var(--accent);
+      border-radius: 6px;
+      font-family: 'Fira Code', monospace;
+    }
+
+    .card-hover {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    }
+
+    .highlight {
+      background: linear-gradient(transparent 70%, rgba(59, 130, 246, 0.2) 30%);
+      padding: 0 2px;
+    }
+
+    .nav-link {
+      position: relative;
+      padding-bottom: 0.25rem;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: white;
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .section-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Custom progress bar */
+    .progress-container {
+      width: 100%;
+      height: 8px;
+      background-color: #e2e8f0;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background-color: var(--accent);
+      border-radius: 4px;
+      width: 0%;
+    }
+
+    /* Animated image shadow */
+    .img-shadow {
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .img-shadow:hover {
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Mobile menu */
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 70%;
+      height: 100vh;
+      background-color: var(--secondary);
+      z-index: 30;
+      padding: 2rem;
+      transition: right 0.3s ease;
+    }
+
+    .mobile-menu.active {
+      right: 0;
+    }
+
+    .backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 20;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .backdrop.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* Animation classes */
+    /* .fade-up {
+      opacity: 0;
+      transform: translateY(20px);
+    } */
+
+    /* .fade-in {
+      opacity: 0;
+    } */
+
+    /* .slide-left {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+ 
+    .slide-right {
+      opacity: 0;
+      transform: translateX(20px);
+    } */
+
+    /* Rotating stat cards */
+    .stat-card {
+      perspective: 1000px;
+      position: relative;
+      height: 160px;
+    }
+
+    .stat-card-inner {
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.6s;
+    }
+
+    .stat-card:hover .stat-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .stat-card-front,
+    .stat-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .stat-card-back {
+      background-color: var(--primary);
+      color: white;
+      transform: rotateY(180deg);
+      padding: 1rem;
+    }
+
+    /* Animated charts */
+    .chart-bar {
+      height: 24px;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+      border-radius: 4px;
+      width: 0%;
+      transition: width 1.5s ease;
+    }
+
+    /* Code highlighting effect */
+    .highlight-code {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .highlight-code::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 2s ease;
+    }
+
+    .highlight-code.active::after {
+      left: 100%;
+    }
+
+    /* Scroll to top button */
+    .scroll-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 3rem;
+      height: 3rem;
+      background-color: var(--primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      transform: translateY(20px);
+    }
+
+    .scroll-top.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Floating navigation dots */
+    .nav-dots {
+      position: fixed;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      z-index: 10;
+    }
+
+    .nav-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: var(--border);
+      transition: transform 0.3s ease, background-color 0.3s ease;
+      cursor: pointer;
+    }
+
+    .nav-dot.active {
+      background-color: var(--primary);
+      transform: scale(1.3);
+    }
+
+    /* Form animations */
+    .input-animated {
+      border-bottom: 2px solid var(--border);
+      transition: border-color 0.3s ease;
+    }
+
+    .input-animated:focus {
+      border-color: var(--primary);
+      outline: none;
+    }
+
+    .input-label {
+      position: absolute;
+      left: 0;
+      top: 0.75rem;
+      transition: transform 0.3s ease, font-size 0.3s ease, color 0.3s ease;
+      pointer-events: none;
+    }
+
+    .input-animated:focus+.input-label,
+    .input-animated:not(:placeholder-shown)+.input-label {
+      transform: translateY(-1.5rem);
+      font-size: 0.75rem;
+      color: var(--primary);
+    }
+  </style>
+</head>
+
+<body class="min-h-screen">
+  <!-- Navigation -->
+  <nav class="bg-secondary fixed w-full z-10 ">
+    <div class="container mx-auto px-4 md:px-6 lg:px-8">
+      <div class="flex justify-between items-center py-4">
+        <div class="flex items-center">
+
+        </div>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="#about" class="text-white nav-link">About</a>
+          <a href="#process" class="text-white nav-link">Process</a>
+          <a href="#insights" class="text-white nav-link">Insights</a>
+          <a href="#recommendations" class="text-white nav-link">Recommendations</a>
+          <a href="#contact" class="text-white nav-link">Contact</a>
+        </div>
+        <div class="md:hidden">
+          <button id="menuBtn" class="text-white">
+            <i class="fas fa-bars text-xl"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobileMenu" class="mobile-menu">
+    <div class="flex justify-between items-center mb-8">
+
+      <button id="closeMenuBtn" class="text-white">
+        <i class="fas fa-times text-xl"></i>
+      </button>
+    </div>
+    <div class="flex flex-col space-y-6">
+      <a href="#about" class="text-white text-lg">About</a>
+      <a href="#process" class="text-white text-lg">Process</a>
+      <a href="#insights" class="text-white text-lg">Insights</a>
+      <a href="#recommendations" class="text-white text-lg">Recommendations</a>
+      <a href="#contact" class="text-white text-lg">Contact</a>
+    </div>
+  </div>
+  <div id="backdrop" class="backdrop"></div>
+
+  <!-- Floating Navigation Dots -->
+  <div class="nav-dots hidden lg:flex">
+    <div class="nav-dot active" data-section="hero"></div>
+    <div class="nav-dot" data-section="about"></div>
+    <div class="nav-dot" data-section="process"></div>
+    <div class="nav-dot" data-section="insights"></div>
+    <div class="nav-dot" data-section="recommendations"></div>
+    <div class="nav-dot" data-section="contact"></div>
+  </div>
+
+  <!-- Hero Section -->
+  <header id="hero" class=" pt-16 pb-20 hero-gradient relative overflow-hidden">
+    <div class="container mx-auto px-6 md:px-12 relative pb-10">
+      <div class="flex flex-col md:flex-row items-center justify-between">
+        <div class="md:w-1/2 mb-10 md:mb-0 fade-up" id="heroContent">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold  leading-tight mb-6">
+            From Data to Decisions
+          </h1>
+          <p class="text-xl md:text-2xl text-blue-100 mb-8">An SQL Journey Through Quick Cart's Retail Analytics</p>
+          <p class="text-blue-100 text-lg max-w-lg mb-8">Transforming raw retail data into actionable business insights
+            that drive strategic decision-making.</p>
+          <div class="flex flex-wrap gap-4">
+            <a href="#process"
+              class="px-8 py-3 bg-transparent border-2 border-white text-white rounded-lg font-medium hover:bg-white/20 hover:bg-opacity-10 transition">See
+              My
+              Process</a>
+            <a href="#contact"
+              class="px-8 py-3 bg-transparent border-2 border-white text-white rounded-lg font-medium hover:bg-white/20 hover:bg-opacity-5 transition">Get
+              In Touch</a>
+          </div>
+        </div>
+        <div class="md:w-2/5 fade-up" id="heroDashboard">
+          <div class="bg-white p-4 rounded-lg shadow-xl img-shadow">
+            <img
+              src="https://images.pexels.com/photos/9301494/pexels-photo-9301494.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
+              alt="Data visualization dashboard" class="rounded w-full">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Decorative elements -->
+    <div class="absolute bottom-0 left-0 right-0">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+        <path fill="#f8fafc" fill-opacity="1"
+          d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,218.7C672,235,768,245,864,224C960,203,1056,149,1152,138.7C1248,128,1344,160,1392,176L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
+        </path>
+      </svg>
+    </div>
+  </header>
+
+  <!-- About Section -->
+  <section id="about" class="py-20">
+    <div class="container mx-auto px-6 md:px-12">
+      <div class="flex flex-col md:flex-row items-center gap-12">
+        <div class="md:w-1/2 fade-up">
+          <h2 class="text-3xl md:text-4xl font-bold text-secondary section-heading mb-6">About This Project</h2>
+          <p class="text-lg mb-6">In retail, numbers tell stories if you know how to listen. When Quick Cart approached
+            me with their mountain of sales data, they weren't just looking for fancy charts—they needed someone to
+            translate raw numbers into real-world decisions.</p>
+          <p class="text-lg mb-6">This project wasn't just about running SQL queries. It was about answering the
+            questions that keep retail executives up at night: Which products are connecting with customers? Are we
+            investing in the right store formats? How do we turn browser insights into better buying decisions?</p>
+          <p class="text-lg">By diving deep into Quick Cart's retail data, I uncovered patterns that weren't just
+            interesting—they were actionable. The journey from messy spreadsheets to clear strategy recommendations
+            revealed how SQL isn't just a technical skill, but a bridge between data chaos and business clarity.</p>
+        </div>
+        <div class="md:w-1/2 fade-up">
+          <div class="bg-white rounded-xl shadow-lg p-6 img-shadow">
+            <div class="grid grid-cols-2 gap-4">
+              <div class="stat-card">
+                <div class="stat-card-inner">
+                  <div class="stat-card-front bg-blue-50 p-4 rounded-lg text-center">
+                    <span class="text-4xl font-bold text-primary">$1.20M</span>
+                    <p class="mt-2 text-gray-600">Total Revenue</p>
+                  </div>
+                  <div class="stat-card-back">
+                    <p class="text-sm text-center">Generated from 8,523 customer transactions across multiple store
+                      types</p>
+                  </div>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-card-inner">
+                  <div class="stat-card-front bg-blue-50 p-4 rounded-lg text-center">
+                    <span class="text-4xl font-bold text-primary">$141</span>
+                    <p class="mt-2 text-gray-600">Avg. Transaction</p>
+                  </div>
+                  <div class="stat-card-back">
+                    <p class="text-sm text-center">15% higher than industry average for similar retail categories</p>
+                  </div>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-card-inner">
+                  <div class="stat-card-front bg-blue-50 p-4 rounded-lg text-center">
+                    <span class="text-4xl font-bold text-primary">1,559</span>
+                    <p class="mt-2 text-gray-600">Unique Products</p>
+                  </div>
+                  <div class="stat-card-back">
+                    <p class="text-sm text-center">Across 16 categories and 3 major product types</p>
+                  </div>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-card-inner">
+                  <div class="stat-card-front bg-blue-50 p-4 rounded-lg text-center">
+                    <span class="text-4xl font-bold text-primary">3.97</span>
+                    <p class="mt-2 text-gray-600">Avg. Rating</p>
+                  </div>
+                  <div class="stat-card-back">
+                    <p class="text-sm text-center">Collected from post-purchase customer surveys</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mt-6 bg-gray-50 p-4 rounded-lg">
+              <div class="flex justify-between mb-2">
+                <span class="font-medium">Project Completion</span>
+                <span>100%</span>
+              </div>
+              <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process Section -->
+  <section id="process" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-6 md:px-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-secondary section-heading mb-12 text-center fade-up">My Analysis
+        Process</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+        <div class="bg-white p-6 rounded-xl shadow-md card-hover fade-up">
+          <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+            <i class="fas fa-database text-primary text-xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">Data Import & Validation</h3>
+          <p>Every great analysis starts with a reality check. I confirmed data completeness before diving into complex
+            queries.</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow-md card-hover fade-up" style="transition-delay: 0.2s;">
+          <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+            <i class="fas fa-broom text-primary text-xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">Data Cleaning</h3>
+          <p>I standardized inconsistent values to ensure accurate analysis, particularly with product categorization.
+          </p>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow-md card-hover fade-up" style="transition-delay: 0.4s;">
+          <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+            <i class="fas fa-chart-line text-primary text-xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">KPI Development</h3>
+          <p>I identified four north star metrics that would guide our understanding of business performance.</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow-md card-hover fade-up" style="transition-delay: 0.6s;">
+          <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+            <i class="fas fa-magnifying-glass-chart text-primary text-xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">Deep Dive Analysis</h3>
+          <p>I used advanced SQL techniques to uncover hidden patterns across multiple business dimensions.</p>
+        </div>
+      </div>
+
+      <!-- Data Cleaning Section -->
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-16">
+        <div class="flex flex-col md:flex-row">
+          <div class="md:w-1/2 p-8 fade-up">
+            <h3 class="text-2xl font-semibold mb-4">Data Cleaning</h3>
+            <p class="mb-4">The devil's in the details—especially when those details aren't consistent. Digging into the
+              dataset revealed a classic data problem: different teams had entered the same information in different
+              ways.</p>
+            <p class="mb-6">"Low fat," "LF," and "low fat" all meant the same thing, but the database saw them as
+              entirely different categories.</p>
+            <div class="code-block p-4 text-sm overflow-x-auto highlight-code">
+              <pre>UPDATE quickcart_data
+SET Item_Fat_Content =
+CASE
+    WHEN Item_Fat_Content IN ('LF', 'low fat') THEN 'Low Fat'
+    WHEN Item_Fat_Content = 'reg' THEN 'Regular'
+    ELSE Item_Fat_Content
+END;</pre>
+            </div>
+          </div>
+          <div class="md:w-1/2 bg-gray-50 p-8 fade-up">
+            <h4 class="font-semibold mb-3 text-lg">Before Cleaning</h4>
+            <div class="bg-white p-4 rounded mb-6">
+              <img
+                src="https://images.pexels.com/photos/3183153/pexels-photo-3183153.jpeg?auto=compress&cs=tinysrgb&w=600"
+                alt="Before cleaning - inconsistent labels" class="rounded">
+            </div>
+            <h4 class="font-semibold mb-3 text-lg">After Cleaning</h4>
+            <div class="bg-white p-4 rounded">
+              <img
+                src="https://images.pexels.com/photos/669610/pexels-photo-669610.jpeg?auto=compress&cs=tinysrgb&w=600"
+                alt="After cleaning - standardized labels" class="rounded">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI Development -->
+      <div class="bg-white rounded-xl shadow-lg p-8 mb-16 fade-up">
+        <h3 class="text-2xl font-semibold mb-6">Key Performance Indicators</h3>
+        <p class="mb-6">Numbers without context are just math. Numbers with context become strategy. Working with Quick
+          Cart's leadership team, we identified four north star metrics that would guide our deeper analysis:</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <h4 class="font-semibold text-xl mb-3">1. Total Revenue: <span class="text-primary">$1.20M</span></h4>
+            <div class="code-block p-4 text-sm mb-4 highlight-code">
+              <pre>SELECT CONCAT(CAST(SUM(Total_Sales) /1000000 
+AS DECIMAL(10,2)), ' Million') AS Total_revenue 
+FROM quickcart_data;</pre>
+            </div>
+            <p>This isn't just a number—it's the foundation for every conversation about growth targets, market share,
+              and return on investment.</p>
+          </div>
+
+          <div>
+            <h4 class="font-semibold text-xl mb-3">2. Average Sale: <span class="text-primary">$141</span></h4>
+            <div class="code-block p-4 text-sm mb-4 highlight-code">
+              <pre>SELECT ROUND(AVG(Total_Sales), 0) AS Average_sales 
+FROM quickcart_data;</pre>
+            </div>
+            <p>Every shopping cart tells a story. This metric sets the threshold for "what's a good deal?" and guides
+              pricing strategy.</p>
+          </div>
+
+          <div>
+            <h4 class="font-semibold text-xl mb-3">3. Product Diversity: <span class="text-primary">1,559 items</span>
+            </h4>
+            <div class="code-block p-4 text-sm mb-4 highlight-code">
+              <pre>SELECT COUNT(DISTINCT Item_Identifier) AS Total_Items
+FROM quickcart_data;</pre>
+            </div>
+            <p>For customers, that's choice. For operations teams, that's complexity. This helps balance consumer desire
+              for options against operational reality.</p>
+          </div>
+
+          <div>
+            <h4 class="font-semibold text-xl mb-3">4. Customer Satisfaction: <span class="text-primary">3.97/5</span>
+            </h4>
+            <div class="code-block p-4 text-sm mb-4 highlight-code">
+              <pre>SELECT ROUND(AVG(Rating), 1) AS Average_rating 
+FROM quickcart_data;</pre>
+            </div>
+            <p>Sales tell you what happened yesterday. Ratings hint at what might happen tomorrow. This metric serves as
+              an early warning system.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Insights Section -->
+  <section id="insights" class="py-20 bg-black">
+    <div class="container mx-auto px-6 md:px-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-secondary section-heading mb-12 text-center fade-up">Key Insights
+        Discovered</h2>
+
+      <!-- Fat Content Analysis -->
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-16">
+        <div class="flex flex-col md:flex-row">
+          <div class="md:w-1/2 p-8 slide-left">
+            <h3 class="text-2xl font-semibold mb-4">Sales Performance by Fat Content</h3>
+            <p class="mb-4">In an increasingly health-conscious market, understanding how nutritional profiles affect
+              sales isn't just interesting—it's essential.</p>
+            <div class="code-block p-4 text-sm mb-4 overflow-x-auto highlight-code">
+              <pre>SELECT 
+    Item_Fat_Content, 
+    ROUND(SUM(Total_Sales), 2) AS Total_Sales,
+    ROUND(AVG(Rating), 2) AS Average_rating,
+    COUNT(*) AS No_of_Order
+FROM 
+    quickcart_data 
+GROUP BY Item_Fat_Content
+ORDER BY Total_Sales DESC;</pre>
+            </div>
+            <p class="mb-4">The results revealed a decisive consumer preference:</p>
+            <ul class="list-disc pl-5 mb-4">
+              <li><strong>Low Fat products</strong> generated <strong>$776,319.68 in sales</strong> (64.6% of total
+                revenue)</li>
+              <li><strong>Regular products</strong> contributed <strong>$425,361.80</strong> (35.4% of total revenue)
+              </li>
+              <li>Both categories maintain nearly identical average ratings of <strong>3.97</strong></li>
+              <li>Low Fat products recorded almost <strong>twice the number of orders</strong> (5,517 vs 3,006)</li>
+            </ul>
+            <p>This data challenged conventional wisdom at Quick Cart. While they had been expanding their "Regular" fat
+              content offerings based on taste-test feedback, customers were clearly voting with their wallets for
+              healthier options.</p>
+          </div>
+          <div class="md:w-1/2 bg-gray-50 p-8 flex items-center justify-center slide-right">
+            <div class="w-full max-w<div class=" w-full max-w-md">
+              <div class="relative">
+                <div class="chart-container">
+                  <div class="mb-4">
+                    <h4 class="font-medium mb-2">Low Fat Products (64.6%)</h4>
+                    <div class="bg-gray-200 rounded-full h-6">
+                      <div class="chart-bar rounded-full h-6" data-percentage="64.6"></div>
+                    </div>
+                  </div>
+                  <div class="mb-4">
+                    <h4 class="font-medium mb-2">Regular Products (35.4%)</h4>
+                    <div class="bg-gray-200 rounded-full h-6">
+                      <div class="chart-bar rounded-full h-6" data-percentage="35.4"></div>
+                    </div>
+                  </div>
+                </div>
+                <p class="text-center mt-6 text-sm text-gray-500">Revenue Distribution by Fat Content</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Location Analysis -->
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-16">
+        <div class="flex flex-col md:flex-row">
+          <div class="md:w-1/2 bg-gray-50 p-8 flex items-center justify-center order-2 md:order-1 slide-left">
+            <div class="w-full max-w-md">
+              <div class="relative">
+                <div class="chart-container">
+                  <div class="mb-4">
+                    <h4 class="font-medium mb-2">Tier 3 (Low Fat)</h4>
+                    <div class="bg-gray-200 rounded-full h-6">
+                      <div class="chart-bar rounded-full h-6" data-percentage="72"></div>
+                    </div>
+                  </div>
+                  <div class="mb-4">
+                    <h4 class="font-medium mb-2">Tier 3 (Regular)</h4>
+                    <div class="bg-gray-200 rounded-full h-6">
+                      <div class="chart-bar rounded-full h-6" data-percentage="55"></div>
+                    </div>
+                  </div>
+                  <div class="mb-4">
+                    <h4 class="font-medium mb-2">Tier 2 (Low Fat)</h4>
+                    <div class="bg-gray-200 rounded-full h-6">
+                      <div class="chart-bar rounded-full h-6" data-percentage="65"></div>
+                    </div>
+                  </div>
+                  <div class="mb-4">
+                    <h4 class="font-medium mb-2">Tier 2 (Regular)</h4>
+                    <div class="bg-gray-200 rounded-full h-6">
+                      <div class="chart-bar rounded-full h-6" data-percentage="45"></div>
+                    </div>
+                  </div>
+                </div>
+                <p class="text-center mt-4 text-sm text-gray-500">Fat Content Preference by Location Type</p>
+              </div>
+            </div>
+          </div>
+          <div class="md:w-1/2 p-8 order-1 md:order-2 slide-right">
+            <h3 class="text-2xl font-semibold mb-4">Location and Product Type Analysis</h3>
+            <p class="mb-4">Retail success isn't just about what you sell—it's about matching products to place.</p>
+            <div class="code-block p-4 text-sm mb-4 overflow-x-auto highlight-code">
+              <pre>SELECT Outlet_Location_Type, 
+       ISNULL([Low Fat], 0) AS Low_Fat, 
+       ISNULL([Regular], 0) AS Regular
+FROM 
+(
+    SELECT Outlet_Location_Type, Item_Fat_Content, 
+           CAST(SUM(Total_Sales) AS DECIMAL(10,2)) AS Total_Sales
+    FROM quickcart_data
+    GROUP BY Outlet_Location_Type, Item_Fat_Content
+) AS SourceTable
+PIVOT 
+(
+    SUM(Total_Sales) 
+    FOR Item_Fat_Content IN ([Low Fat], [Regular])
+) AS PivotTable
+ORDER BY Outlet_Location_Type;</pre>
+            </div>
+            <p class="mb-4">This PIVOT query transformed complex relationships into actionable insights:</p>
+            <ul class="list-disc pl-5 mb-4">
+              <li><strong>Tier 3 locations</strong> show the strongest performance for both categories:
+                <ul class="list-disc pl-5 mt-2">
+                  <li>$306,806.99 in Low Fat sales</li>
+                  <li>$165,326.03 in Regular sales</li>
+                </ul>
+              </li>
+              <li><strong>All location tiers</strong> show stronger preference for Low Fat products</li>
+              <li><strong>Tier 1 locations</strong> show the smallest gap between Low Fat and Regular product
+                preferences</li>
+            </ul>
+            <p>The patterns were striking—urban locations showed dramatically different preferences than suburban ones.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Store Size Impact -->
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-16">
+        <div class="flex flex-col md:flex-row">
+          <div class="md:w-1/2 p-8 slide-left">
+            <h3 class="text-2xl font-semibold mb-4">Store Size Impact on Sales</h3>
+            <p class="mb-4">In retail, square footage equals investment. Understanding the return on that investment
+              shapes everything from leasing decisions to store design.</p>
+            <div class="code-block p-4 text-sm mb-4 overflow-x-auto highlight-code">
+              <pre>SELECT
+    Outlet_Size,
+    ROUND(SUM(Total_Sales), 2) AS Total_Sales,
+    ROUND(100.0 * SUM(Total_Sales) / 
+        SUM(SUM(Total_Sales)) OVER(), 2) AS Sales_Percentage
+FROM quickcart_data
+GROUP BY Outlet_Size
+ORDER BY Total_Sales DESC;</pre>
+            </div>
+            <p class="mb-4">The analysis revealed surprising efficiency patterns:</p>
+            <ul class="list-disc pl-5 mb-4">
+              <li><strong>Medium-sized stores</strong> generate <strong>42.27% of total sales</strong> ($507,895.73)
+              </li>
+              <li><strong>Small stores</strong> contribute <strong>37.01%</strong> ($444,794.17)</li>
+              <li><strong>Large stores</strong> account for only <strong>20.72%</strong> ($249,991.58)</li>
+            </ul>
+            <p>The window function here did more than calculate percentages—it revealed efficiency. Medium-sized stores
+              weren't just generating strong total sales—they were delivering more revenue per square foot than their
+              larger counterparts.</p>
+          </div>
+          <div class="md:w-1/2 bg-gray-50 p-8 flex items-center justify-center slide-right">
+            <div class="w-full max-w-md">
+              <div id="donutChart" class="relative">
+                <svg width="300" height="300" viewBox="0 0 300 300" class="mx-auto">
+                  <circle cx="150" cy="150" r="100" fill="transparent" stroke="#e5e7eb" stroke-width="40" />
+                  <circle cx="150" cy="150" r="100" fill="transparent" stroke="#3b82f6" stroke-width="40"
+                    stroke-dasharray="251.2 628" stroke-dashoffset="0" class="donut-segment" />
+                  <circle cx="150" cy="150" r="100" fill="transparent" stroke="#60a5fa" stroke-width="40"
+                    stroke-dasharray="232.4 628" stroke-dashoffset="-251.2" class="donut-segment" />
+                  <circle cx="150" cy="150" r="100" fill="transparent" stroke="#93c5fd" stroke-width="40"
+                    stroke-dasharray="130.1 628" stroke-dashoffset="-483.6" class="donut-segment" />
+                  <text x="150" y="140" text-anchor="middle" font-size="16" font-weight="bold">Store Size</text>
+                  <text x="150" y="170" text-anchor="middle" font-size="14">Revenue Distribution</text>
+                </svg>
+                <div class="flex justify-between mt-4">
+                  <div class="flex items-center">
+                    <div class="w-4 h-4 rounded-full bg-blue-500 mr-2"></div>
+                    <span>Medium (42.27%)</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-4 h-4 rounded-full bg-blue-400 mr-2"></div>
+                    <span>Small (37.01%)</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-4 h-4 rounded-full bg-blue-300 mr-2"></div>
+                    <span>Large (20.72%)</span>
+                  </div>
+                </div>
+              </div>
+              <p class="text-center mt-4 text-sm text-gray-500">Revenue Contribution by Store Size</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Outlet Type Analysis -->
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+        <div class="flex flex-col md:flex-row">
+          <div class="md:w-1/2 bg-gray-50 p-8 flex items-center justify-center order-2 md:order-1 slide-left">
+            <div class="w-full max-w-md">
+              <div class="relative">
+                <table class="min-w-full divide-y divide-gray-200">
+                  <thead>
+                    <tr>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Outlet
+                        Type</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sales %
+                      </th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rating
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white divide-y divide-gray-200">
+                    <tr>
+                      <td class="px-6 py-4 whitespace-nowrap">Supermarket Type1</td>
+                      <td class="px-6 py-4 whitespace-nowrap">65.54%</td>
+                      <td class="px-6 py-4 whitespace-nowrap">3.96</td>
+                    </tr>
+                    <tr>
+                      <td class="px-6 py-4 whitespace-nowrap">Supermarket Type2</td>
+                      <td class="px-6 py-4 whitespace-nowrap">13.27%</td>
+                      <td class="px-6 py-4 whitespace-nowrap">3.91</td>
+                    </tr>
+                    <tr>
+                      <td class="px-6 py-4 whitespace-nowrap">Grocery Store</td>
+                      <td class="px-6 py-4 whitespace-nowrap">12.64%</td>
+                      <td class="px-6 py-4 whitespace-nowrap">3.99</td>
+                    </tr>
+                    <tr>
+                      <td class="px-6 py-4 whitespace-nowrap">Supermarket Type3</td>
+                      <td class="px-6 py-4 whitespace-nowrap">8.55%</td>
+                      <td class="px-6 py-4 whitespace-nowrap">3.88</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="text-center mt-4 text-sm text-gray-500">Performance Matrix by Outlet Type</p>
+            </div>
+          </div>
+          <div class="md:w-1/2 p-8 order-1 md:order-2 slide-right">
+            <h3 class="text-2xl font-semibold mb-4">Comprehensive Outlet Type Analysis</h3>
+            <p class="mb-4">Different store formats serve different needs. Understanding which formats drive both volume
+              and satisfaction helps optimize the store portfolio.</p>
+            <div class="code-block p-4 text-sm mb-4 overflow-x-auto highlight-code">
+              <pre>SELECT 
+    Outlet_Type,
+    ROUND(SUM(Total_Sales), 2) AS Total_sales,
+    ROUND(100.0 * SUM(Total_Sales) / 
+        SUM(SUM(Total_Sales)) OVER(), 2) AS Sales_Percentage,
+    ROUND(AVG(Total_Sales), 2) AS Avg_sales,
+    ROUND(AVG(Rating), 2) AS Average_rating,
+    COUNT(*) AS No_of_Order
+FROM
+    quickcart_data
+GROUP BY Outlet_Type
+ORDER BY Total_sales DESC;</pre>
+            </div>
+            <p class="mb-4">This comprehensive analysis revealed:</p>
+            <ul class="list-disc pl-5 mb-4">
+              <li><strong>Supermarket Type1</strong> dominates with <strong>65.54% of total sales</strong> ($787,549.89)
+              </li>
+              <li><strong>Supermarket Type1</strong> also has the highest customer satisfaction with an average rating
+                of <strong>3.96</strong></li>
+              <li><strong>Supermarket Type3</strong> has the highest average transaction value but lowest total sales
+              </li>
+              <li><strong>Grocery Stores</strong> contribute 12.64% of sales with relatively high average ratings of
+                3.99</li>
+            </ul>
+            <p>This holistic view connected dots that had previously been examined in isolation. Supermarket Type1
+              stores weren't just revenue leaders—they also enjoyed above-average customer ratings despite having lower
+              average transaction values.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recommendations Section -->
+  <section id="recommendations" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-6 md:px-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-secondary section-heading mb-12 text-center fade-up">Business
+        Recommendations</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Product Strategy -->
+        <div class="bg-white p-8 rounded-xl shadow-lg card-hover fade-up">
+          <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+            <i class="fas fa-tag text-primary text-xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">Product Strategy</h3>
+          <div class="mb-6">
+            <p class="mb-3">1. <strong>Accelerate Low Fat product launches</strong> – The data clearly shows a 2:1
+              consumer preference for Low Fat options, despite equal satisfaction ratings.</p>
+            <p class="mb-3">2. <strong>Restructure pricing strategy</strong> – Despite Supermarket Type1 stores having
+              high volume, they have the lowest average transaction value. Consider bundle deals to increase basket
+              size.</p>
+            <p>3. <strong>Optimize product assortment</strong> – Focus on the 20% of products that drive 80% of sales,
+              while maintaining enough variety to satisfy the consumer desire for choice.</p>
+          </div>
+          <div class="flex items-center justify-between p-4 bg-blue-50 rounded-lg text-sm">
+            <span>Implementation difficulty:</span>
+            <div class="flex items-center">
+              <span class="mr-2">Medium</span>
+              <div class="flex">
+                <i class="fas fa-circle text-primary mx-0.5"></i>
+                <i class="fas fa-circle text-primary mx-0.5"></i>
+                <i class="fas fa-circle text-gray-300 mx-0.5"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Location Strategy -->
+        <div class="bg-white p-8 rounded-xl shadow-lg card-hover fade-up" style="transition-delay: 0.2s;">
+          <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+            <i class="fas fa-map-marker-alt text-primary text-xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">Location Strategy</h3>
+          <div class="mb-6">
+            <p class="mb-3">1. <strong>Focus expansion on Tier 3 locations</strong> – These areas show the strongest
+              performance for both product types, suggesting untapped potential.</p>
+            <p class="mb-3">2. <strong>Tailor product mix by location</strong> – Tier 1 locations show nearly equal
+              preference for Regular and Low Fat products, while Tier 3 areas strongly favor Low Fat options.</p>
+            <p>3. <strong>Pilot new store formats in Tier 2 locations</strong> – These areas show moderate performance
+              for both categories, making them ideal testing grounds for new concepts.</p>
+          </div>
+          <div class="flex items-center justify-between p-4 bg-blue-50 rounded-lg text-sm">
+            <span>Implementation difficulty:</span>
+            <div class="flex items-center">
+              <span class="mr-2">High</span>
+              <div class="flex">
+                <i class="fas fa-circle text-primary mx-0.5"></i>
+                <i class="fas fa-circle text-primary mx-0.5"></i>
+                <i class="fas fa-circle text-primary mx-0.5"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Store Format Optimization -->
+        <div class="bg-white p-8 rounded-xl shadow-lg card-hover fade-up" style="transition-delay: 0.4s;">
+          <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+            <i class="fas fa-store text-primary text-xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">Store Format Optimization</h3>
+          <div class="mb-6">
+            <p class="mb-3">1. <strong>Prioritize medium-sized stores</strong> – These locations deliver the highest
+              revenue per square foot, suggesting an optimal balance between variety and operating costs.</p>
+            <p class="mb-3">2. <strong>Reconsider large format stores</strong> – Despite their size, these locations
+              deliver only 20.72% of total sales, indicating potential inefficiencies.</p>
+            <p>3. <strong>Leverage grocery store loyalty</strong> – Despite their smaller footprint, these formats
+              maintain high customer satisfaction ratings, suggesting a stronger community connection.</p>
+          </div>
+          <div class="flex items-center justify-between p-4 bg-blue-50 rounded-lg text-sm">
+            <span>Implementation difficulty:</span>
+            <div class="flex items-center">
+              <span class="mr-2">Medium</span>
+              <div class="flex">
+                <i class="fas fa-circle text-primary mx-0.5"></i>
+                <i class="fas fa-circle text-primary mx-0.5"></i>
+                <i class="fas fa-circle text-gray-300 mx-0.5"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Customer Experience -->
+        <div class="bg-white p-8 rounded-xl shadow-lg card-hover fade-up" style="transition-delay: 0.6s;">
+          <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+            <i class="fas fa-user-friends text-primary text-xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">Customer Experience</h3>
+          <div class="mb-6">
+            <p class="mb-3">1. <strong>Implement targeted loyalty programs</strong> – Different consumer segments
+              clearly value different attributes; tailor rewards accordingly.</p>
+            <p class="mb-3">2. <strong>Enhance nutritional transparency</strong> – The strong preference for Low Fat
+              products indicates consumers value health information; make it easier to find.</p>
+            <p>3. <strong>Create store-specific promotions</strong> – Customer behaviors vary dramatically by location
+              type; one-size-fits-all promotions waste marketing dollars.</p>
+          </div>
+          <div class="flex items-center justify-between p-4 bg-blue-50 rounded-lg text-sm">
+            <span>Implementation difficulty:</span>
+            <div class="flex items-center">
+              <span class="mr-2">Low</span>
+              <div class="flex">
+                <i class="fas fa-circle text-primary mx-0.5"></i>
+                <i class="fas fa-circle text-gray-300 mx-0.5"></i>
+                <i class="fas fa-circle text-gray-300 mx-0.5"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-20">
+    <div class="container mx-auto px-6 md:px-12">
+      <div class="flex flex-col md:flex-row gap-12">
+        <div class="md:w-1/2 fade-up">
+          <h2 class="text-3xl md:text-4xl font-bold text-secondary section-heading mb-6">Get In Touch</h2>
+          <p class="text-lg mb-6">Interested in turning your data into actionable insights? Let's connect and discuss
+            how I can help your business unlock hidden value in your data.</p>
+          <p class="text-lg mb-10">Whether you need help with data analysis, SQL development, or building custom
+            dashboards, I'm here to help you make sense of your numbers.</p>
+
+          <div class="flex items-center mb-6">
+            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+              <i class="fas fa-envelope text-primary"></i>
+            </div>
+            <div>
+              <h3 class="font-medium text-lg">Email</h3>
+              <p>analysis@datafolio.com</p>
+            </div>
+          </div>
+
+          <div class="flex items-center mb-6">
+            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+              <i class="fas fa-map-marker-alt text-primary"></i>
+            </div>
+            <div>
+              <h3 class="font-medium text-lg">Location</h3>
+              <p>San Francisco, CA & Remote</p>
+            </div>
+          </div>
+
+          <div class="flex items-center">
+            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+              <i class="fas fa-clock text-primary"></i>
+            </div>
+            <div>
+              <h3 class="font-medium text-lg">Availability</h3>
+              <p>Open for projects starting May 2025</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="md:w-1/2 fade-up" style="transition-delay: 0.3s;">
+          <div class="bg-white rounded-xl shadow-lg p-8">
+            <h3 class="text-2xl font-semibold mb-6">Send a Message</h3>
+            <form>
+              <div class="mb-6 relative">
+                <input type="text" class="input-animated w-full bg-transparent px-0 py-2 text-lg" placeholder=" "
+                  id="name">
+                <label for="name" class="input-label text-gray-500">Your Name</label>
+              </div>
+
+              <div class="mb-6 relative">
+                <input type="email" class="input-animated w-full bg-transparent px-0 py-2 text-lg" placeholder=" "
+                  id="email">
+                <label for="email" class="input-label text-gray-500">Email Address</label>
+              </div>
+
+              <div class="mb-6 relative">
+                <input type="text" class="input-animated w-full bg-transparent px-0 py-2 text-lg" placeholder=" "
+                  id="subject">
+                <label for="subject" class="input-label text-gray-500">Subject</label>
+              </div>
+
+              <div class="mb-8 relative">
+                <textarea class="input-animated w-full bg-transparent px-0 py-2 text-lg h-32" placeholder=" "
+                  id="message"></textarea>
+                <label for="message" class="input-label text-gray-500">Your Message</label>
+              </div>
+
+              <button type="button"
+                class="w-full py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition">Send
+                Message</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-secondary text-white py-12">
+    <div class="container mx-auto px-6 md:px-12">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="mb-6 md:mb-0">
+
+        </div>
+        <div class="flex space-x-6">
+          <a href="#" class="text-black hover:text-blue-300 transition"><i class="fab fa-linkedin text-2xl"></i></a>
+          <a href="#" class="text-black hover:text-blue-300 transition"><i class="fab fa-github text-2xl"></i></a>
+          <a href="#" class="text-black hover:text-blue-300 transition"><i class="fab fa-twitter text-2xl"></i></a>
+        </div>
+      </div>
+      <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-black">
+        <p>&copy; All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll To Top Button -->
+  <button id="scrollTop" class="scroll-top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script>
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const closeMenuBtn = document.getElementById('closeMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const backdrop = document.getElementById('backdrop');
+    const mobileLinks = mobileMenu.querySelectorAll('a');
+
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.add('active');
+      backdrop.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+
+    function closeMenu() {
+      mobileMenu.classList.remove('active');
+      backdrop.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    closeMenuBtn.addEventListener('click', closeMenu);
+    backdrop.addEventListener('click', closeMenu);
+
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', closeMenu);
+    });
+
+    // Animation on scroll
+    document.addEventListener('DOMContentLoaded', function () {
+      // Initialize GSAP ScrollTrigger
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Progress bar animation
+      gsap.to('#progressBar', {
+        width: '100%',
+        duration: 1.5,
+        scrollTrigger: {
+          trigger: '#progressBar',
+          start: 'top bottom',
+        }
+      });
+
+      // Animate chart bars when they come into view
+      document.querySelectorAll('.chart-bar').forEach(bar => {
+        gsap.to(bar, {
+          width: bar.dataset.percentage + '%',
+          duration: 1.5,
+          scrollTrigger: {
+            trigger: bar,
+            start: 'top bottom',
+          }
+        });
+      });
+
+      // Animate code highlighting
+      document.querySelectorAll('.highlight-code').forEach(code => {
+        gsap.timeline({
+          scrollTrigger: {
+            trigger: code,
+            start: 'top bottom',
+            onEnter: () => code.classList.add('active')
+          }
+        });
+      });
+
+      // Fade up animations
+      gsap.utils.toArray('.fade-up').forEach(element => {
+        gsap.from(element, {
+          y: 30,
+          opacity: 0,
+          duration: 0.8,
+          scrollTrigger: {
+            trigger: element,
+            start: 'top bottom-=100',
+          }
+        });
+      });
+
+      // Slide left animations
+      gsap.utils.toArray('.slide-left').forEach(element => {
+        gsap.from(element, {
+          x: -30,
+          opacity: 0,
+          duration: 0.8,
+          scrollTrigger: {
+            trigger: element,
+            start: 'top bottom-=100',
+          }
+        });
+      });
+
+      // Slide right animations
+      gsap.utils.toArray('.slide-right').forEach(element => {
+        gsap.from(element, {
+          x: 30,
+          opacity: 0,
+          duration: 0.8,
+          scrollTrigger: {
+            trigger: element,
+            start: 'top bottom-=100',
+          }
+        });
+      });
+
+      // Fade in animations
+      gsap.utils.toArray('.fade-in').forEach(element => {
+        gsap.from(element, {
+          opacity: 0,
+          duration: 1,
+          scrollTrigger: {
+            trigger: element,
+            start: 'top bottom-=100',
+          }
+        });
+      });
+
+      // Animate hero content
+      gsap.from('#heroContent', {
+        y: 30,
+        // opacity: 0,
+        duration: 1,
+        delay: 0.2
+      });
+
+      gsap.from('#heroDashboard', {
+        y: 30,
+        // opacity: 0,
+        duration: 1,
+        delay: 0.5
+      });
+
+      // Scroll to top button
+      const scrollTopBtn = document.getElementById('scrollTop');
+
+      window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+          scrollTopBtn.classList.add('visible');
+        } else {
+          scrollTopBtn.classList.remove('visible');
+        }
+      });
+
+      scrollTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+
+      // Navigation dots functionality
+      const sections = document.querySelectorAll('section, header');
+      const navDots = document.querySelectorAll('.nav-dot');
+
+      window.addEventListener('scroll', () => {
+        let current = '';
+
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.clientHeight;
+
+          if (window.pageYOffset >= sectionTop - 300) {
+            current = section.getAttribute('id');
+          }
+        });
+
+        navDots.forEach(dot => {
+          dot.classList.remove('active');
+          if (dot.dataset.section === current) {
+            dot.classList.add('active');
+          }
+        });
+      });
+
+      navDots.forEach(dot => {
+        dot.addEventListener('click', function () {
+          const targetSection = document.getElementById(this.dataset.section);
+          window.scrollTo({
+            top: targetSection.offsetTop,
+            behavior: 'smooth'
+          });
+        });
+      });
+
+      // Smooth scroll for navigation links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+
+          const targetId = this.getAttribute('href');
+          if (targetId === '#') return;
+
+          const targetElement = document.querySelector(targetId);
+          if (targetElement) {
+            window.scrollTo({
+              top: targetElement.offsetTop,
+              behavior: 'smooth'
+            });
+          }
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
