@@ -1,0 +1,107 @@
+<svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="400" fill="#f8fcff"/>
+  
+  <!-- Clean data representation -->
+  <!-- Organized documents -->
+  <g transform="translate(50, 30)">
+    <rect x="0" y="0" width="140" height="100" fill="#fff" stroke="#aaa" rx="5" />
+    <rect x="10" y="10" width="120" height="80" fill="#e6f7ff" stroke="#aaa" rx="5" />
+    <line x1="30" y1="30" x2="110" y2="30" stroke="#333" stroke-width="2" />
+    <line x1="30" y1="50" x2="110" y2="50" stroke="#333" stroke-width="2" />
+    <line x1="30" y1="70" x2="110" y2="70" stroke="#333" stroke-width="2" />
+  </g>
+  
+  <!-- Clean charts and graphs -->
+  <!-- Perfect bar chart -->
+  <g transform="translate(300, 50)">
+    <rect x="0" y="50" width="30" height="100" fill="#66cc99" />
+    <rect x="40" y="30" width="30" height="120" fill="#66cc99" />
+    <rect x="80" y="70" width="30" height="80" fill="#66cc99" />
+    <rect x="120" y="20" width="30" height="130" fill="#66cc99" />
+    <rect x="160" y="60" width="30" height="90" fill="#66cc99" />
+    <rect x="200" y="40" width="30" height="110" fill="#66cc99" />
+    <line x1="0" y1="150" x2="230" y2="150" stroke="#333" stroke-width="2" />
+    <line x1="0" y1="0" x2="0" y2="150" stroke="#333" stroke-width="2" />
+    
+    <!-- Axis labels -->
+    <text x="15" y="165" font-family="Arial" font-size="12" fill="#333" text-anchor="middle">A</text>
+    <text x="55" y="165" font-family="Arial" font-size="12" fill="#333" text-anchor="middle">B</text>
+    <text x="95" y="165" font-family="Arial" font-size="12" fill="#333" text-anchor="middle">C</text>
+    <text x="135" y="165" font-family="Arial" font-size="12" fill="#333" text-anchor="middle">D</text>
+    <text x="175" y="165" font-family="Arial" font-size="12" fill="#333" text-anchor="middle">E</text>
+    <text x="215" y="165" font-family="Arial" font-size="12" fill="#333" text-anchor="middle">F</text>
+  </g>
+  
+  <!-- Clean scatterplot with trend line -->
+  <g transform="translate(550, 70)">
+    <circle cx="10" cy="90" r="5" fill="#3366cc" />
+    <circle cx="25" cy="75" r="5" fill="#3366cc" />
+    <circle cx="40" cy="60" r="5" fill="#3366cc" />
+    <circle cx="55" cy="45" r="5" fill="#3366cc" />
+    <circle cx="70" cy="30" r="5" fill="#3366cc" />
+    <circle cx="85" cy="15" r="5" fill="#3366cc" />
+    <line x1="0" y1="100" x2="100" y2="100" stroke="#333" stroke-width="2" />
+    <line x1="0" y1="0" x2="0" y2="100" stroke="#333" stroke-width="2" />
+    
+    <!-- Trend line -->
+    <line x1="10" y1="90" x2="85" y2="15" stroke="#ff6600" stroke-width="2" />
+    
+    <!-- Axis labels -->
+    <text x="50" y="115" font-family="Arial" font-size="12" fill="#333" text-anchor="middle">X Axis</text>
+    <text x="-25" y="50" font-family="Arial" font-size="12" fill="#333" text-anchor="middle" transform="rotate(-90, -25, 50)">Y Axis</text>
+  </g>
+  
+  <!-- Clean data table -->
+  <g transform="translate(100, 200)">
+    <!-- Header row -->
+    <rect x="0" y="0" width="500" height="30" fill="#66b3ff" stroke="#333" />
+    <text x="50" y="20" font-family="Arial" font-size="15" fill="#fff" text-anchor="middle">ID</text>
+    <text x="150" y="20" font-family="Arial" font-size="15" fill="#fff" text-anchor="middle">Name</text>
+    <text x="250" y="20" font-family="Arial" font-size="15" fill="#fff" text-anchor="middle">Category</text>
+    <text x="350" y="20" font-family="Arial" font-size="15" fill="#fff" text-anchor="middle">Value</text>
+    <text x="450" y="20" font-family="Arial" font-size="15" fill="#fff" text-anchor="middle">Date</text>
+    
+    <!-- Data rows -->
+    <rect x="0" y="30" width="500" height="30" fill="#e6f7ff" stroke="#333" />
+    <text x="50" y="50" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">001</text>
+    <text x="150" y="50" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">Alpha</text>
+    <text x="250" y="50" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">Type A</text>
+    <text x="350" y="50" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">75.4</text>
+    <text x="450" y="50" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">2024-01-15</text>
+    
+    <rect x="0" y="60" width="500" height="30" fill="#fff" stroke="#333" />
+    <text x="50" y="80" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">002</text>
+    <text x="150" y="80" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">Beta</text>
+    <text x="250" y="80" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">Type B</text>
+    <text x="350" y="80" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">82.7</text>
+    <text x="450" y="80" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">2024-02-20</text>
+    
+    <rect x="0" y="90" width="500" height="30" fill="#e6f7ff" stroke="#333" />
+    <text x="50" y="110" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">003</text>
+    <text x="150" y="110" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">Gamma</text>
+    <text x="250" y="110" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">Type A</text>
+    <text x="350" y="110" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">68.2</text>
+    <text x="450" y="110" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">2024-03-05</text>
+  </g>
+  
+  <!-- Happy data analyst -->
+  <g transform="translate(650, 250)">
+    <!-- Head -->
+    <circle cx="50" cy="50" r="30" fill="#ffcc99" />
+    <!-- Hair -->
+    <path d="M 30 30 Q 50 20 70 30" stroke="#333" stroke-width="10" fill="none" />
+    <!-- Eyes -->
+    <circle cx="40" cy="45" r="3" fill="#333" />
+    <circle cx="60" cy="45" r="3" fill="#333" />
+    <!-- Happy mouth -->
+    <path d="M 40 60 Q 50 70 60 60" stroke="#333" stroke-width="2" fill="none" />
+    <!-- Sparkles -->
+    <path d="M 80 30 L 85 35 L 90 30 L 85 25 Z" fill="#ffcc00" />
+    <path d="M 20 20 L 25 25 L 30 20 L 25 15 Z" fill="#ffcc00" />
+    <path d="M 70 70 L 75 75 L 80 70 L 75 65 Z" fill="#ffcc00" />
+  </g>
+  
+  <!-- Title -->
+  <text x="400" y="380" font-family="Arial" font-size="24" fill="#333" text-anchor="middle" font-weight="bold">DATA AFTER CLEANING: JOY!</text>
+</svg>
